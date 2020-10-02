@@ -34,7 +34,7 @@ def check_col_distr(df, col, figsize=(7,5)):
 
 
 
-def plot_box(feature, target='seasonal_vaccine', data=df):
+def plot_box(feature, data, target='seasonal_vaccine'):
     import matplotlib.pyplot as plt
     import seaborn as sns
     plt.figure(figsize=(7,5))
@@ -49,7 +49,7 @@ def plot_box(feature, target='seasonal_vaccine', data=df):
 
 
 
-def plot_bar(feature, target='seasonal_vaccine', hue='seasonal_vaccine', data=df, show_legend=False):
+def plot_bar(feature, data, target='seasonal_vaccine', hue='seasonal_vaccine', show_legend=False):
     import matplotlib.pyplot as plt
     import seaborn as sns
     plt.figure(figsize=(7,5))
@@ -69,7 +69,7 @@ def plot_bar(feature, target='seasonal_vaccine', hue='seasonal_vaccine', data=df
 
 
 
-def plot_reg(feature, category=None, target='seasonal_vaccine', data=df):
+def plot_reg(feature, data, category=None, target='seasonal_vaccine'):
     import matplotlib.pyplot as plt
     import seaborn as sns
     plt.figure(figsize=(7,5))
@@ -83,7 +83,7 @@ def plot_reg(feature, category=None, target='seasonal_vaccine', data=df):
     return g
 
 
-def plot_bb(feature, target='seasonal_vaccine', data=df):
+def plot_bb(feature, data, target='seasonal_vaccine'):
     import matplotlib.pyplot as plt
     import seaborn as sns
     fig, (ax1,ax2) = plt.subplots(nrows=1, ncols=2, figsize=(14,6))
