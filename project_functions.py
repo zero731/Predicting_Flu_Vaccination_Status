@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import sklearn.metrics
 
 
 def check_null(df):
@@ -109,3 +110,66 @@ def plot_bb(feature, data, target='seasonal_vaccine'):
     ax2.get_legend().remove()
     
     plt.tight_layout()
+    
+    
+    
+    
+    
+def eval_classifier(clf, X_test, y_test, model_descr='',
+                    target_labels=['No Vacc', 'Vaccine'],
+                    cmap='Blues', normalize='true'):
+    """Given an sklearn classification model (already fit to training data), test features, and test labels,
+       displays sklearn.metrics classification report, confusion matrix, and ROC curve. A description of the model 
+       can be provided to model_descr to customize the title of the classification report.
+       """
+    
+    from sklearn.metrics import classification_report, plot_confusion_matrix, plot_roc_curve
+    
+    ## get model predictions
+    y_hat_test = clf.predict(X_test)
+    
+    
+    ## Classification Report
+    report_title = 'Classification Report: {}'.format(model_descr)
+    divider = ('-----' * 11) + ('-' * (len(model_descr) - 31))
+    report_table = classification_report(y_test, y_hat_test, 
+                                                 target_names=target_labels)
+    
+    print(divider, report_title, divider, report_table, divider, divider, '\n', sep='\n')
+    
+    
+    ## Make Subplots for Figures
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12,6))
+    
+    ## Confusion Matrix
+    plot_confusion_matrix(clf, X_test, y_test, 
+                                  display_labels=target_labels, 
+                                  normalize=normalize, cmap=cmap, ax=axes[0])
+    
+    axes[0].set_title('Confusion Matrix', fontdict={'fontsize': 18,'fontweight': 'bold'})
+    axes[0].set_xlabel(axes[0].get_xlabel(),
+                       fontdict={'fontsize': 12,'fontweight': 'bold'})
+    axes[0].set_ylabel(axes[0].get_ylabel(),
+                       fontdict={'fontsize': 12,'fontweight': 'bold'})
+    axes[0].set_xticklabels(axes[0].get_xticklabels(),
+                       fontdict={'fontsize': 10,'fontweight': 'bold'})
+    axes[0].set_yticklabels(axes[0].get_yticklabels(), 
+                       fontdict={'fontsize': 10,'fontweight': 'bold'})
+    
+    
+    ## ROC Curve
+    plot_roc_curve(clf, X_test, y_test, ax=axes[1])
+    # plot line that demonstrates probable success when randomly guessing labels
+    axes[1].plot([0,1],[0,1], ls='--', color='r')
+    
+    axes[1].set_title('ROC Curve', 
+                      fontdict={'fontsize': 18,'fontweight': 'bold'})
+    axes[1].set_xlabel(axes[1].get_xlabel(), 
+                      fontdict={'fontsize': 12,'fontweight': 'bold'})
+    axes[1].set_ylabel(axes[1].get_ylabel(), 
+                      fontdict={'fontsize': 12,'fontweight': 'bold'})
+    
+    fig.tight_layout()
+    plt.show()
+
+    
