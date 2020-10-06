@@ -11,6 +11,11 @@ def check_null(df):
     missing_vals['% Null'] = (df.isna().sum() / len(df)) * 100
     return missing_vals
     
+    
+    
+    
+    
+    
 
 def check_unique(df, col, dropna=False):
     import pandas as pd
@@ -19,6 +24,13 @@ def check_unique(df, col, dropna=False):
     else:
         unique_vals = pd.DataFrame(df[col].value_counts(dropna=False))
     return unique_vals
+
+
+
+
+
+
+
 
 
 def check_col_distr(df, col, figsize=(7,5)):
@@ -35,6 +47,11 @@ def check_col_distr(df, col, figsize=(7,5)):
 
 
 
+
+
+
+
+
 def plot_box(feature, data, target='seasonal_vaccine'):
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -47,6 +64,12 @@ def plot_box(feature, data, target='seasonal_vaccine'):
     ax.set_xlabel('Vaccine', fontsize=14, weight='bold')
     ax.set_ylabel(feature, fontsize=14, weight='bold')
     return ax
+
+
+
+
+
+
 
 
 
@@ -70,6 +93,11 @@ def plot_bar(feature, data, target='seasonal_vaccine', hue='seasonal_vaccine', s
 
 
 
+
+
+
+
+
 def plot_reg(feature, data, category=None, target='seasonal_vaccine'):
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -82,6 +110,11 @@ def plot_reg(feature, data, category=None, target='seasonal_vaccine'):
                      scatter_kws={'alpha':0.5})
     g.set_axis_labels('Vaccine', feature) 
     return g
+
+
+
+
+
 
 
 def plot_bb(feature, data, target='seasonal_vaccine'):
@@ -110,6 +143,9 @@ def plot_bb(feature, data, target='seasonal_vaccine'):
     ax2.get_legend().remove()
     
     plt.tight_layout()
+    
+    
+    
     
     
     
@@ -173,3 +209,95 @@ def eval_classifier(clf, X_test, y_test, model_descr='',
     plt.show()
 
     
+    
+    
+    
+    
+    
+def fit_grid_clf(model, params, X_train, y_train, score='accuracy'):
+    
+    from sklearn.model_selection import GridSearchCV
+    
+    grid = GridSearchCV(model, params, scoring=score, cv=3, n_jobs=-1)
+
+    grid.fit(X_train, y_train)
+    return grid
+    
+    
+    
+    
+    
+    
+    
+    
+def plot_logreg_coeffs(model, feature_names, model_step='logreg',
+                       title='Logistic Regression Coefficients'):
+
+    logreg_coeffs = model.named_steps[model_step].coef_
+    sorted_idx = logreg_coeffs.argsort()
+
+    importance = pd.Series(logreg_coeffs[0], index=feature_names)
+    fig, axes = plt.subplots(2, figsize=(12,10))
+    importance.sort_values().tail(20).plot(kind='barh', ax=axes[0])
+    importance.sort_values().head(20).plot(kind='barh', ax=axes[1])
+    fig.suptitle(title, fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.show()
+    
+    
+    
+    
+    
+    
+    
+def plot_feat_importance(clf, model_step_name, feature_names, model_title=''):
+
+    feature_importances = (
+        clf.named_steps[model_step_name].feature_importances_)
+
+    sorted_idx = feature_importances.argsort()
+    
+    importance = pd.Series(feature_importances, index=feature_names)
+    plt.figure(figsize=(12,10))
+    fig = importance.sort_values().tail(20).plot(kind='barh')
+    fig.set_title('{} Feature Importances'.format(model_title), fontsize=18, fontweight='bold')
+    plt.xticks(fontsize=12, fontweight='bold')
+    plt.yticks(fontsize=12)
+
+    plt.show()
+
+    
+    
+    
+    
+    
+    
+def plot_count_by_grp(group, data, hue='seasonal_vaccine',
+                      labels=['No Vacc', 'Vaccine'], title='',
+                      y_label='# of Respondents', x_label='',
+                      x_tick_labels=False, rotate=True,
+                      grp_order=None):
+    
+    
+    font_dict = {}
+    font_dict['title'] = {'fontsize':18, 'fontweight':'bold'}
+    font_dict['ax_label'] = {'fontsize':14, 'fontweight':'bold'}
+    font_dict['ticks'] = {'size':14}
+    font_dict['legend'] = {'fontsize':12}
+    
+    plt.figure(figsize=(8,6))
+    ax = sns.countplot(x=group, hue=hue,
+                  data=data, palette='nipy_spectral',
+                      order=grp_order)
+    ax.set_title('Vaccination By {}'.format(title), fontdict=font_dict['title'])
+    ax.set_xlabel(x_label, fontdict=font_dict['ax_label'])
+    ax.set_ylabel(y_label, fontdict=font_dict['ax_label'])
+    ax.tick_params(labelsize=font_dict['ticks']['size'])
+    
+    if rotate:
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+    if x_tick_labels:
+        ax.set_xticklabels(x_tick_labels)
+
+    ax.legend(labels=labels, fontsize=font_dict['legend']['fontsize'])
+    plt.show();
