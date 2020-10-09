@@ -265,7 +265,7 @@ def eval_classifier(clf, X_test, y_test, model_descr='',
                       fontdict={'fontsize': 12,'fontweight': 'bold'})
     
     if save:
-        plt.savefig(fig_filepath+fig_name)
+        plt.savefig(fig_filepath+fig_name, bbox_inches = "tight")
     
     fig.tight_layout()
     plt.show()
@@ -328,7 +328,7 @@ def plot_logreg_coeffs(model, feature_names, model_step='logreg',
     plt.show()
     
     if save:
-        plt.savefig(fig_filepath+fig_name)
+        plt.savefig(fig_filepath+fig_name, bbox_inches = "tight")
     
     return fig, axes
     
@@ -364,7 +364,7 @@ def plot_feat_importance(clf, model_step_name, feature_names, model_title='', sa
     plt.yticks(fontsize=12)
     
     if save:
-        plt.savefig(fig_filepath+fig_name)
+        plt.savefig(fig_filepath+fig_name, bbox_inches = "tight")
 
     plt.show()
     
@@ -452,7 +452,7 @@ def plot_final_1(x, df, group_order=None, x_label='',
         ax.set_xticklabels(x_tick_labels)
 
     if save:
-        plt.savefig(fig_filepath+fig_name)
+        plt.savefig(fig_filepath+fig_name, bbox_inches = "tight")
 
     plt.show();
     
@@ -508,7 +508,7 @@ def plot_final_2(x1, x2, df1, df2, group1_order=None, group2_order=None,
         ax2.set_xticklabels(x2_tick_labels)
 
     if save:
-        plt.savefig(fig_filepath+fig_name)
+        plt.savefig(fig_filepath+fig_name, bbox_inches = "tight")
         
     plt.tight_layout()
     plt.show();

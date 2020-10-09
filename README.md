@@ -84,7 +84,7 @@ Several columns were identified as having at least some missing values. Because 
  
 As seen below, there was a clear pattern that records missing a value from at least one of these columns were also missing values in several other columns. 
 
-<img src="Figures/missingo_matrix_all.png" width = 900 halign=center>
+<img src="Figures/missingo_matrix_all.png" width = 1000 halign=center>
 
 Many of these missing values were related to an individual's opinions about the seasonal flu and vaccine, as well as their behavioral avoidance to minimize their risk of contracting the seasonal flu. Since these variables are likely related and were often all missing together, dropping these 1,768 observations out of the original 26,707 records (6.6%) seemed acceptable. Since most of the variables are categorical, other columns had their null values filled with a 'missing' category to indicate that these individuals declined to answer the question. The columns filled with a 'missing' category included the following:
 - `health_insurance` 
@@ -206,7 +206,7 @@ Model performance improved very slightly with hyperparameter tuning, but all per
  'rf__criterion': 'entropy',
  'rf__max_depth': None,
  'rf__max_features': 50,
- 'rf__min_samples_split': 100}
+ 'rf__min_samples_split': 50}
 ```
 <img src="Figures/Best_RF_eval.png" width = 1000 halign=center>
 <img src="Figures/Best_RF_feat_imp.png" width = 800 halign=center>
@@ -220,7 +220,7 @@ Model performance improved very slightly with tuning. The best estimator tuned f
 ``` 
 # .best_params_
 {'xgb__colsample_bytree': 0.7,
- 'xgb__learning_rate': 0.2,
+ 'xgb__learning_rate': 0.1,
  'xgb__max_depth': 3,
  'xgb__min_child_weight': 1,
  'xgb__subsample': 1}
@@ -237,39 +237,38 @@ The predictions of the stacked classifier were most influenced by the XGB estima
 
 
 ### Interpretation of Best XGradientBoost Classifier
-Overall, the models performed very similarly in terms of all metrics displayed. The stacked model performance metrics were nearly identical to those of the best XGB classifier with a recall for No Vacc = 0.81, a recall for No Vacc = 0.78 (0.77 for the best XGB), accuracy = 0.79, and ROC AUC of 0.87. Because this ensemble of all the best models relied most heavily on the best XGB classifier, I will focus on interpreting the implications regarding the most important features of that XGB classifier.
+Overall, the models performed very similarly in terms of all metrics displayed. The stacked model performance metrics were identical to those of the best XGB classifier with a recall for No Vacc = 0.81, a recall for No Vacc = 0.78, accuracy = 0.79, and ROC AUC of 0.87. Because this ensemble of all the best models relied most heavily on the best XGB classifier, I will focus on interpreting the implications regarding the most important features of that XGB classifier.
 
 <img src="Figures/Best_XGB_feat_imp.png" width = 800 halign=center>
 
 As shown above, the features that were the most important for predicting vaccination status were: 
-- `doctor_rec_seasonal` - whether or not the individual's doctor recommended they get the vaccine, specifically 1: their doctor did recommend getting vaccinated was the best predictor
 - `opinion_seas_vacc_effective` - how effective on a scale from 1 to 5 (5 being very effective) the respondent believes the vaccine to be at protecting against the flu
+- `doctor_rec_seasonal` - whether or not the individual's doctor recommended they get the vaccine, specifically 1: their doctor did recommend getting vaccinated was the best predictor
 - `opinion_seasonal_risk` - how concerned on a scale from 1 to 5 (5 being very effective) the respondent is about getting the seasonal flu without the vaccine
-- `age_group` - two specific age groups were especially useful for predicting vaccination status: 65+ years and 18-34 years
+- `age_group` - 2 specific age groups were especially useful for predicting vaccination status: 65+ years and 18-34 years, and a third also made it into the top 20 predictive features (55 - 64 Years)
 - `health_worker` - whether or not the individual is a health worker
 - `health_insurance` - this shows up twice as an important feature (first as having health insurance, then as not having health insurance, while the third option of declining to answer was less informative for the model)
 - `opinion_sick_from_vaccine` - perceived level of risk of getting sick from the seasonal flu vaccine itself
-- `high_risk_cat` - specifically the 'low risk' category was most helpful for informing accurate predictions
-- `h1n1_knowledge` - respondent's level of knowledge about the H1N1 flu
-- `employment_occupation` - one occupation code, 'dcjcmpih', was a useful predictor of vaccination status but it is not known which occupation this code correspond to (however it is likely that it is related to being a health worker since that variable was a useful predictor)
+- `high_risk_cat` - specifically the 'low risk' and 'high_risk' categories were most helpful for informing accurate predictions
 - `employment_industry` - 3 industry codes seemed to be useful for making correct predictions: 'fcxhlnwr', 'haxffmxo', and 'xqicxuve' but it is not known which industries these codes correspond to (however it is likely that at least one is related to being a health worker since that variable was a useful predictor)
 - `rent_or_own` - if the respondent rented rather than owned their housing, this was useful for making accurate predictions of vaccination status
+- `h1n1_knowledge` - respondent's level of knowledge about the H1N1 flu
+- `education` - being a college graduate or having less than 12 years of education was also a useful category for predicting vaccination status
+- `income_poverty` - having a household income level below the poverty line showed up as a useful category for predicting vaccination status while the other categories were not as useful
 - `race` - (binary variable: white or POC) was a useful predictor of vaccination status
-- `income_poverty` - the highest income category showed up as a useful category for predicting vaccination status while the other categories were not as useful
-- `education` - having less than 12 years of education was also a useful category for predicting vaccination status
 
 
-<img src="Figures/Doc_Recc.png" width = 500 halign=center>
+<img src="Figures/Doc_Recc.png" width = 600 halign=center>
 
 The most important predictive feature is having a doctor recommend getting the flu vaccine. People whose physician recommended the vaccine were substantially more likely to have gotten vaccinated.
 
 
-<img src="Figures/Effect_and_Risk.png" width = 800 halign=center>
+<img src="Figures/Effect_and_Risk.png" width = 900 halign=center>
 
 The majority of people rated the effectiveness of the flu vaccine as 4 - Somewhat Effective, but those people were still more likely not to get the vaccine. Only people that rated the vaccine as 5 - Very Effective were more likely to have gotten the vaccine than not. This emphasizes how important it is to provide evidence for and actively communicate to the public about how well the vaccine can protect against the flu virus. Unsurprisingly people that are more worried about getting sick without the vaccine are more likely to get the vaccine.
 
 
-<img src="Figures/Age_and_Risk_Cat.png" width = 800 halign=center>
+<img src="Figures/Age_and_Risk_Cat.png" width = 900 halign=center>
 
 Two age groups showed up in the top 5 most important predictive features:
   - **65+ Years**: These individuals were much more likely to have gotten the flu vaccine than not. This is a great sign since individuals in this age category are at greater risk for developing flu-related complications. As such, it's likely that their doctors make sure to recommend the vaccine.
@@ -280,22 +279,22 @@ In general, it appears that the proportion of individuals electing to get vaccin
 As the risk of developing complications as a result of the flu increases, so does the proportion of individuals electing to get the vaccine. **Low risk** individuals were much less likely to choose to get the seasonal flu vaccine. **High risk** individuals with 2 or more factors that increase the risk of developing flu-related complications were much more likely to get vaccinated against the seasonal flu.
 
 
-<img src="Figures/Insur_and_Income.png" width = 800 halign=center>
+<img src="Figures/Insur_and_Income.png" width = 900 halign=center>
 
 People with health insurance are more likely to have gotten the vaccine whereas people without health insurance were very unlikely to have gotten the vaccine. This may be because individuals without health insurance are less likely to see a doctor very often, so they may not have the vaccine recommended to them (the best predictor) and they may also be less informed about the effectiveness and safety of the vaccine or their risk of falling ill and developing complications. Individuals living with a household income below the 2008 Census poverty threshold are also less likely to get the vaccine. The proportion of non-vaccinated versus vaccinated individuals is much more balanced in the other income categories.
 
 
-<img src="Figures/H1N1_Knowledge.png" width = 500 halign=center>
+<img src="Figures/H1N1_Knowledge.png" width = 600 halign=center>
 
 A very small proportion of the total sample population (< 10%) acknowledged having no knowledge of H1N1. Of those that had at least some knowledge of H1N1, the proportion of individuals that chose to get vaccinated against the seasonal flu was greater for those more informed about the H1N1 flu.
 
 
-<img src="Figures/Race.png" width = 500 halign=center>
+<img src="Figures/Race.png" width = 600 halign=center>
 
 White respondents were about as likely to get the vaccine as not, but POC were much less likely to get the vaccine.
 
 
-<img src="Figures/Educ.png" width = 500 halign=center>
+<img src="Figures/Educ.png" width = 600 halign=center>
 
 The proportion of people vaccinated within each education category increases with increasing level of education. This difference is most notable for those who did not complete high school.
 
@@ -331,4 +330,4 @@ As such, in the interest of encouraging more people to get vaccinated against th
 * The models were all built using data collected in 2009, so a logical next step would be to find or obtain similar data from more recent years. This would help make the model more relevant.
 * Including additional data from more recent years could also allow for a better understanding of how attitudes towards vaccination has changed over time.
 * The dataset used for this project is extremely imbalanced in terms of race, with 79.6% of the respondents being white, and the remaining 20.4% made up of the original groups: Black, Hispanic, and Other or Multiple (these 3 original classifications were regrouped into one category representing all people of color). The underrepresentation of people of color in the data has important implications, especially in light of the disproportionately heavy impact of the current COVID-19 pandemic on communities of color. The impending flu season may interact to produce even more drastic impacts on these communities. Future efforts should seek to collect data that can address this underrepresentation.
-* Since the employment occupation and industry codes are encoded, it's uncertain which types of employment are most strongly related with the choice to get vaccinated. This would be an interesting avenue for future research.
+* Since the employment industry codes are encoded, it's uncertain which types of employment are most strongly related with the choice to get vaccinated. This would be an interesting avenue for future research.
