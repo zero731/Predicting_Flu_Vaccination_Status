@@ -96,7 +96,7 @@ Many of these missing values were related to an individual's opinions about the 
 - `employment_occupation` 
 - `doctor_recc_seasonal`
 
-The `employment_occupation`, `employment_industry`, and `health_insurance` columns contained the most missing values, with null values making up 50.4%, 49.9%, and 46.0% of the column, respectively. However, 10,231 of the null values for employment_occupation and employment_industry are basically 'not applicable' rather than someone declining to answer because those are the respondents who answered 'Not in Labor Force' for employment_status. An additional 1,453 observations represented all unemployed individuals. For these individuals, `employment_occupation` and `employment_industry` were filled with 'not employed' rather than 'missing'.
+The `employment_occupation`, `employment_industry`, and `health_insurance` columns contained the most missing values, with null values making up 50.4%, 49.9%, and 46.0% of the column, respectively. However, 10,231 of the null values for `employment_occupation` and `employment_industry` are basically 'not applicable' rather than someone declining to answer because those are the respondents who answered 'Not in Labor Force' for `employment_status`. An additional 1,453 observations represented all unemployed individuals. For these individuals, `employment_occupation` and `employment_industry` were filled with 'not employed' rather than 'missing'.
 
 
  
@@ -106,82 +106,84 @@ I engineered a number of features from the existing ones, including:
 
 - `behav_score`: a variable that represents how much an individual has done behaviorally to avoid the flu (aside from getting vaccinated) by summing up all behavioral variables (except `behavioral_antiviral_meds` which was ultimately dropped because individuals may have taken those for other reasons). The behavioral variables are all binary columns with 1 representing behavior that reduces the risk of contracting the flu. By taking the sum across these columns, a higher score represents a more careful, flu-conscious/avoidant individual.
 
-- `behav_to_risk`: a variable that represents the ratio of how much an individual has done behaviorally to avoid the flu (aside from getting vaccinated) to their perception of the risk of getting the flu without the vaccine. The numerator is behav_score + 1 (min = 1, max = 7) to differentiate among individuals who are not taking any action to avoid the flu, but differ in the degree to which they are concerned about getting sick without the vaccine. The denominator is the rating of risk perception, opinion_seas_risk (min = 1, max = 5). An individual with a very low score is someone who has done little to avoid the flu but is very concerned about getting sick without the vaccine. An individual with a score on the upper end has done a lot to behaviorally minimize their risk of exposure and is not very concerned about getting sick without the vaccine. This type of individual may be less likely to get the vaccine, even if they think it's effective, simply because they feel they're doing enough to avoid exposure on their own.
+- `behav_to_risk`: a variable that represents the ratio of how much an individual has done behaviorally to avoid the flu (aside from getting vaccinated) to their perception of the risk of getting the flu without the vaccine. The numerator is `behav_score` + 1 (min = 1, max = 7) to differentiate among individuals who are not taking any action to avoid the flu, but differ in the degree to which they are concerned about getting sick without the vaccine. The denominator is the rating of risk perception, `opinion_seas_risk` (min = 1, max = 5). An individual with a very low score is someone who has done little to avoid the flu but is very concerned about getting sick without the vaccine. An individual with a score on the upper end has done a lot to behaviorally minimize their risk of exposure and is not very concerned about getting sick without the vaccine. This type of individual may be less likely to get the vaccine, even if they think it's effective, simply because they feel they are doing enough to avoid exposure on their own.
 
--`high_risk_cat` - a variable that represents an individual's overall risk for developing flu-related complications. Some individuals are naturally at higher risk of developing complications (<a href="https://www.cdc.gov/flu/highrisk/index.htm"> CDC - "People at High Risk for Flu Complications"</a>). This includes people **65 years and older**, **children 6 months or younger** (so people that have regular close contact with a child under 6 months will also be considered higher risk), and people with **chronic medical conditions** (such as asthma or other lung conditions, diabetes, heart conditions, kidney conditions, sickle cell anemia or other anemia, neurological or neuromuscular conditions, liver conditions, or weakened immune systems). Individuals with no complicating risk factors were considered 'low risk', individuals with 1 complicating risk factor were considered 'med risk', and individuals with 2 or 3 complicating factors were considered 'high risk'.
+- `high_risk_cat` - a variable that represents an individual's overall risk for developing flu-related complications. Some individuals are naturally at higher risk of developing complications (<a href="https://www.cdc.gov/flu/highrisk/index.htm"> CDC - "People at High Risk for Flu Complications"</a>). This includes people **65 years and older**, **children 6 months or younger** (so people that have regular close contact with a child under 6 months will also be considered higher risk), and people with **chronic medical conditions** (such as asthma or other lung conditions, diabetes, heart conditions, kidney conditions, sickle cell anemia or other anemia, neurological or neuromuscular conditions, liver conditions, or weakened immune systems). Individuals with no complicating risk factors were considered 'low risk', individuals with 1 complicating risk factor were considered 'med risk', and individuals with 2 or 3 complicating factors were considered 'high risk'.
 
--`race` - This column was originally made up of 4 categories: White, Black, Hispanic, and Other or Multiple. However, as with so many medical databases, the sample population is predominantly white (19,856 out of 24,939 individuals sampled). From a modeling perspective, it made the most sense to combine these latter three underrepresented groups into one group for people of color.
+- `race` - This column was originally made up of 4 categories: White, Black, Hispanic, and Other or Multiple. However, as with so many medical databases, the sample population is predominantly white (19,856 out of 24,939 individuals sampled). From a modeling perspective, it made the most sense to combine these latter three underrepresented groups into one group for people of color.
 
 ### Selecting Possible Predictors
 
 Because the goal of the project was to predict vaccination status against the seasonal flu and not against H1N1, most columns specific to the H1N1 vaccine were excluded. However, I retained the `h1n1_concern` and `h1n1_knowledge` columns since people who were more worried or informed about the pandemic may have been more likely to get vaccinated against the seasonal flu. The `behavioral_antiviral_meds` column was dropped since people may have been taking antiviral medications for other non-flu viruses. The predictors used when fitting all types of classifiers tested were: 
-- `h1n1_concern` 
-- `h1n1_knowledge` 
-- `behavioral_avoidance`
-- `behavioral_face_mask` 
-- `behavioral_wash_hands`
-- `behavioral_large_gatherings` 
-- `behavioral_outside_home`
-- `behavioral_touch_face`
-- `doctor_recc_seasonal`
-- `chronic_med_condition`
-- `child_under_6_months` 
-- `health_worker`
-- `health_insurance`
-- `opinion_seas_vacc_effective`
-- `opinion_seas_risk`
-- `opinion_seas_sick_from_vacc`
-- `age_group`
-- `education`
-- `race`
-- `sex`
-- `income_poverty`
-- `marital_status` 
-- `rent_or_own`
-- `employment_status`
-- `hhs_geo_region`
-- `census_msa`
-- `household_adults`
-- `household_children`
-- `employment_industry`
-- `employment_occupation`
-- `seasonal_vaccine`
-- `behav_score`
-- `behav_to_risk`
-- `high_risk_cat`
+- `h1n1_concern` - numeric
+- `h1n1_knowledge` - numeric
+- `behavioral_avoidance` - binary
+- `behavioral_face_mask` - binary
+- `behavioral_wash_hands` - binary
+- `behavioral_large_gatherings` - binary
+- `behavioral_outside_home` - binary
+- `behavioral_touch_face` - binary
+- `doctor_recc_seasonal` - categorical (0, 1, or 'missing')
+- `chronic_med_condition` - binary
+- `child_under_6_months` - binary
+- `health_worker` - binary
+- `health_insurance` - categorical (0, 1, or 'missing')
+- `opinion_seas_vacc_effective` - numeric
+- `opinion_seas_risk` - numeric
+- `opinion_seas_sick_from_vacc` - numeric
+- `age_group` - categorical
+- `education` - categorical (includes 'missing' category)
+- `race` - binary (White or POC)
+- `sex` - binary
+- `income_poverty` - categorical (includes 'missing' category)
+- `marital_status` - categorical (Married, Not Married, or 'missing')
+- `rent_or_own` - categorical (Own, Rent, or 'missing')
+- `employment_status` - categorical (includes 'missing' category)
+- `hhs_geo_region` - categorical
+- `census_msa` - categorical
+- `household_adults` - numeric
+- `household_children` - numeric
+- `employment_industry` - categorical (includes 'missing' category)
+- `employment_occupation` - categorical (includes 'missing' category)
+- `behav_score` - numeric
+- `behav_to_risk` - numeric
+- `high_risk_cat` - categorical
 
+As part of a preprocessing pipeline, null values were filled with 'missing' using Scikit-Learn's SimpleImputer. All categorical variables were one hot encoded and one category from binary variables was dropped so each was only represented by a single one hot encoded column using Scikit-Learn's OneHotEncoder(drop='if_binary'). All numeric columns were scaled using Scikit-Learn's StandardScaler.
 
 
 ### Modeling
-Classifiers were fit using Scikit-Learn (for logistic regressions, decision trees, random forests, and stacking classifiers) or XGBoost (for XGB classifiers). All types of classifiers were first fit using default parameters, then tuned to optimize recall_macro and accuracy using GridSearchCV to test a grid of hyperparameter values.
+Classifiers were fit using Scikit-Learn (for logistic regressions, decision trees, random forests, and stacking classifiers) or XGBoost (for XGB classifiers). All types of classifiers were first fit using default parameters, then tuned to optimize recall_macro and then accuracy using GridSearchCV to test a grid of hyperparameter values.
 
 Model quality and performance were assessed primarily based on overall accuracy, the recall for the 'No Vaccine' class, and the ROC AUC. A top model was chosen from each type of classifier (except for the decision tree classifiers) based on these criteria and then used as estimators in a stacking classifier.
 
 
 ## Results
-The only classifier that noticeably improved with hyperparameter tuning via GridSearch was the decision tree classifier. Even with these improvements, it was the lowest performing class of model. The evaluation metrics and feature importances for the best classifier of each type are shown below.
+The only classifier that noticeably improved with hyperparameter tuning via GridSearch was the decision tree classifier. Even with these improvements, it was the lowest performing type of classifier. The evaluation metrics and feature importances for the best classifier of each type are shown below.
 
 ### Logistic Regression
 
-#### GridSearch Tuned for `accuracy`
+#### GridSearch Tuned for Accuracy
 Performance metrics such as precision, recall, accuracy, f1 score, and ROC AUC did not improve with tuning.
 
-``` best params
+``` 
+# .best_params_
 {'logreg__C': 1,
 'logreg__class_weight': None,
 'logreg__fit_intercept': True}
 ```
 
 <img src="Figures/Best_LogReg_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_LogReg_coeffs.png" width = 1000 halign=center>
+<img src="Figures/Best_LogReg_coeffs.png" width = 900 halign=center>
 
 
 ### Decision Tree
 
-#### GridSearch Tuned for `accuracy`
+#### GridSearch Tuned for Accuracy
 Both the GridSearch tuned decision trees performed better than the default and were very similar to each other in terms of performance metrics. The one tuned for accuracy rather than recall_macro returned the best results.
 
-``` best params
+``` 
+# .best_params_
 {'dt__class_weight': 'balanced',
  'dt__criterion': 'entropy',
  'dt__max_depth': 9,
@@ -190,15 +192,16 @@ Both the GridSearch tuned decision trees performed better than the default and w
 ```
 
 <img src="Figures/Best_DT_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_DT_feat_imp.png" width = 1000 halign=center>
+<img src="Figures/Best_DT_feat_imp.png" width = 900 halign=center>
 
 
 ### Random Forest
 
-#### GridSearch Tuned for `accuracy`
-Model performance changed slightly with hyperparameter tuning, but all performed relatively similarly and well. For the purposes of the current problem (maximizing accuracy with a focus on maximizing recall for non-vaccinators) the random forest classifier tuned for accuracy was the best model of the 3. This model had performance metrics nearly identical to the logistic regression models (which all had identical performance), except that recall for people who received the vaccination was 0.01 higher (0.78) for this random forest classifier.
+#### GridSearch Tuned for Accuracy
+Model performance improved very slightly with hyperparameter tuning, but all performed relatively similarly and well. For the purposes of the current problem (maximizing accuracy with a focus on maximizing recall for non-vaccinators) the random forest classifier tuned for accuracy was the best model of the 3. This model had performance metrics nearly identical to the logistic regression models (which all had identical performance), except that recall for people who received the vaccination was 0.01 higher (0.78) for this random forest classifier.
 
-``` best params
+``` 
+# .best_params_
 {'rf__class_weight': None,
  'rf__criterion': 'entropy',
  'rf__max_depth': None,
@@ -206,15 +209,16 @@ Model performance changed slightly with hyperparameter tuning, but all performed
  'rf__min_samples_split': 100}
 ```
 <img src="Figures/Best_RF_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_RF_feat_imp.png" width = 1000 halign=center>
+<img src="Figures/Best_RF_feat_imp.png" width = 900 halign=center>
 
 
 ### XGradient Boosted
 
-#### GridSearch Tuned for `accuracy`
-Model performance improved very slightly with tuning. The best estimator tuned for 'recall_macro' and the best estimator tuned for 'accuracy' used the same hyperparameters and returned the same top 20 features for predicting. These two models (which are essentially the same model) are the best of any so far, maximizing recall for non-vaccinators, accuracy, and achieving the highest ROC AUC.
+#### GridSearch Tuned for Accuracy
+Model performance improved very slightly with tuning. The best estimator tuned for recall_macro and the best estimator tuned for accuracy used the same hyperparameters and returned the same top 20 features for predicting. These two models (which are essentially the same model) are the best of any so far, maximizing recall for non-vaccinators, accuracy, and achieving the highest ROC AUC.
 
-``` best params
+``` 
+# .best_params_
 {'xgb__colsample_bytree': 0.7,
  'xgb__learning_rate': 0.2,
  'xgb__max_depth': 3,
@@ -223,7 +227,7 @@ Model performance improved very slightly with tuning. The best estimator tuned f
 ```
 
 <img src="Figures/Best_XGB_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_XGB_feat_imp.png" width = 1000 halign=center>
+<img src="Figures/Best_XGB_feat_imp.png" width = 900 halign=center>
 
 
 ### Stacking Classifier
@@ -235,64 +239,65 @@ The predictions of the stacked classifier were most influenced by the XGB estima
 ### Interpretation of Best XGradientBoost Classifier
 Overall, the models performed very similarly in terms of all metrics displayed. The stacked model performance metrics were nearly identical to those of the best XGB classifier with a recall for No Vacc = 0.81, a recall for No Vacc = 0.78 (0.77 for the best XGB), accuracy = 0.79, and ROC AUC of 0.87. Because this ensemble of all the best models relied most heavily on the best XGB classifier, I will focus on interpreting the implications regarding the most important features of that XGB classifier.
 
-<img src="Figures/Best_XGB_feat_imp.png" width = 1000 halign=center>
+<img src="Figures/Best_XGB_feat_imp.png" width = 900 halign=center>
 
 As shown above, the features that were the most important for predicting vaccination status were: 
 - `doctor_rec_seasonal` - whether or not the individual's doctor recommended they get the vaccine, specifically 1: their doctor did recommend getting vaccinated was the best predictor
 - `opinion_seas_vacc_effective` - how effective on a scale from 1 to 5 (5 being very effective) the respondent believes the vaccine to be at protecting against the flu
 - `opinion_seasonal_risk` - how concerned on a scale from 1 to 5 (5 being very effective) the respondent is about getting the seasonal flu without the vaccine
-- `age_group` - two specific age groups were especially useful for predicting vaccination status: 65+ years and 18-34 years, with a third category (55-64 years) also making it into the top 20 most important features
+- `age_group` - two specific age groups were especially useful for predicting vaccination status: 65+ years and 18-34 years
 - `health_worker` - whether or not the individual is a health worker
 - `health_insurance` - this shows up twice as an important feature (first as having health insurance, then as not having health insurance, while the third option of declining to answer was less informative for the model)
 - `opinion_sick_from_vaccine` - perceived level of risk of getting sick from the seasonal flu vaccine itself
-- `high_risk_cat` - all 3 risk categories (low, high, and med in that order) showed up in the top 20 most important features
+- `high_risk_cat` - specifically the 'low risk' category was most helpful for informing accurate predictions
 - `h1n1_knowledge` - respondent's level of knowledge about the H1N1 flu
 - `employment_occupation` - one occupation code, 'dcjcmpih', was a useful predictor of vaccination status but it is not known which occupation this code correspond to (however it is likely that it is related to being a health worker since that variable was a useful predictor)
 - `employment_industry` - 3 industry codes seemed to be useful for making correct predictions: 'fcxhlnwr', 'haxffmxo', and 'xqicxuve' but it is not known which industries these codes correspond to (however it is likely that at least one is related to being a health worker since that variable was a useful predictor)
 - `rent_or_own` - if the respondent rented rather than owned their housing, this was useful for making accurate predictions of vaccination status
-- `race` - (binary variable: white of POC) was a useful predictor of vaccination status
+- `race` - (binary variable: white or POC) was a useful predictor of vaccination status
 - `income_poverty` - the highest income category showed up as a useful category for predicting vaccination status while the other categories were not as useful
 - `education` - having less than 12 years of education was also a useful category for predicting vaccination status
 
 
-<img src="Figures/Doc_Recc.png" width = 1000 halign=center>
+<img src="Figures/Doc_Recc.png" width = 600 halign=center>
 
 The most important predictive feature is having a doctor recommend getting the flu vaccine. People whose physician recommended the vaccine were substantially more likely to have gotten vaccinated.
 
 
-<img src="Figures/Effect_and_Risk.png" width = 1000 halign=center>
+<img src="Figures/Effect_and_Risk.png" width = 900 halign=center>
 
-The majority of people rate the flu vaccine as 4 - Somewhat Effective, but those people are still more likely not to get the vaccine. Only people that rate the vaccine as 5 - Very Effective are more likely to have gotten the vaccine than not. This emphasizes how important it is to provide evidence for and actively communicate to the public about how well the vaccine can protect against the flu virus. Unsurprisingly people that are more worried about getting sick without the vaccine are more likely to get the vaccine.
+The majority of people rated the effectiveness of the flu vaccine as 4 - Somewhat Effective, but those people were still more likely not to get the vaccine. Only people that rated the vaccine as 5 - Very Effective were more likely to have gotten the vaccine than not. This emphasizes how important it is to provide evidence for and actively communicate to the public about how well the vaccine can protect against the flu virus. Unsurprisingly people that are more worried about getting sick without the vaccine are more likely to get the vaccine.
 
 
-<img src="Figures/Age_and_Risk_Cat.png" width = 1000 halign=center>
+<img src="Figures/Age_and_Risk_Cat.png" width = 900 halign=center>
 
 Two age groups showed up in the top 5 most important predictive features:
   - **65+ Years**: These individuals were much more likely to have gotten the flu vaccine than not. This is a great sign since individuals in this age category are at greater risk for developing flu-related complications. As such, it's likely that their doctors make sure to recommend the vaccine.
-  - **18 - 34 Years**: A much larger proportion of individuals in this age group elect not to get the vaccine than those that do. This age group is not at very high risk of developing complications as a result of the flu, but this would be a key demographic to target and encourage to get vaccinated to maximize the benefits of herd immunity for the population as a whole.
+  - **18 - 34 Years**: A much larger proportion of individuals in this age group elected not to get the vaccine than those that did. This age group is not at very high risk of developing complications as a result of the flu, but this would be a key demographic to target and encourage to get vaccinated to maximize the benefits of herd immunity for the population as a whole.
+
 In general, it appears that the proportion of individuals electing to get vaccinated increases with age.
 
-As the risk of developing complications as a result of the flu increases, so does the proportion of individuals electing to get the vaccine. **Low risk** individuals were much less likely to choose to get the seasonal flu vaccine. **High risk** individuals with 2 or more factors that increase risk of developing flu-related complications were much more likely to get vaccinated against the seasonal flu.
+As the risk of developing complications as a result of the flu increases, so does the proportion of individuals electing to get the vaccine. **Low risk** individuals were much less likely to choose to get the seasonal flu vaccine. **High risk** individuals with 2 or more factors that increase the risk of developing flu-related complications were much more likely to get vaccinated against the seasonal flu.
 
 
-<img src="Figures/Insur_and_Income.png" width = 1000 halign=center>
+<img src="Figures/Insur_and_Income.png" width = 900 halign=center>
 
-People with health insurance are more likely to have gotten the vaccine whereas people without health insurance were very unlikely to have gotten the vaccine. This may be because individuals without health insurance are less likely to see a doctor very often, so they may not have the vaccine recommended to them (a top predictor) and they may also be less informed about the effectiveness and safety of the vaccine or their risk of falling ill and developing complications. Individuals living with a household income below the 2008 Census poverty threshold are also less likely to get the vaccine. The proportion of non-vaccinated versus vaccinated individuals is much more balanced in the other income categories.
+People with health insurance are more likely to have gotten the vaccine whereas people without health insurance were very unlikely to have gotten the vaccine. This may be because individuals without health insurance are less likely to see a doctor very often, so they may not have the vaccine recommended to them (the best predictor) and they may also be less informed about the effectiveness and safety of the vaccine or their risk of falling ill and developing complications. Individuals living with a household income below the 2008 Census poverty threshold are also less likely to get the vaccine. The proportion of non-vaccinated versus vaccinated individuals is much more balanced in the other income categories.
 
 
-<img src="Figures/H1N1_Knowledge.png" width = 1000 halign=center>
+<img src="Figures/H1N1_Knowledge.png" width = 600 halign=center>
 
 A very small proportion of the total sample population (< 10%) acknowledged having no knowledge of H1N1. Of those that had at least some knowledge of H1N1, the proportion of individuals that chose to get vaccinated against the seasonal flu was greater for those more informed about the H1N1 flu.
 
 
-<img src="Figures/Race.png" width = 1000 halign=center>
+<img src="Figures/Race.png" width = 600 halign=center>
 
 White respondents were about as likely to get the vaccine as not, but POC were much less likely to get the vaccine.
 
 
-<img src="Figures/Educ.png" width = 1000 halign=center>
+<img src="Figures/Educ.png" width = 600 halign=center>
 
-The proportion of people vaccinated within each level of education category increases with increasing level of education. This difference is most notable for those who did not complete high school.
+The proportion of people vaccinated within each education category increases with increasing level of education. This difference is most notable for those who did not complete high school.
 
 
 
@@ -311,13 +316,13 @@ As such, in the interest of encouraging more people to get vaccinated against th
 - Individuals between the ages of 18 and 34 were the least likely to get vaccinated against the seasonal flu in 2009 amidst the H1N1 pandemic. This is an interesting parallel with the current COVID-19 pandemic in that individuals in this age range have been identified as the most prominent spreaders of the virus in many states. This younger segment of the population is often less likely to quarantine as strictly as older age groups. Thus, we need to find a way to more effectively communicate the importance of herd immunity and taking action in the interest of the health of others to this subset of the population which is generally better able to recover if they do fall ill.
 - The fact that **people without health insurance** and those **living below the poverty line** were **much less likely to get vaccinated lends support to the growing push for universal health care**. The population as a whole won't benefit as much from herd immunity if a large portion of people do not have access to basic health care needs.
 
-- Overall, efforts to increase the total percentage of the population that is vaccinated against the seasonal flu should focus on encouraging, informing, and providing health care accessibility to the following groups:
- - people between 18 to 34 years old
- - people without health insurance
- - people who rent their living space
- - people of color
- - people living below the poverty line
- - people who did not finish high school.
+- **Overall, efforts to increase the total percentage of the population that is vaccinated against the seasonal flu should focus on encouraging, informing, and providing health care accessibility to the following groups:
+     - **people between 18 to 34 years old**
+     - **people without health insurance**
+     - **people who rent their living space**
+     - **people of color**
+     - **people living below the poverty line**
+     - **people who did not finish high school.**
 
 
 
