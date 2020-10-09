@@ -84,7 +84,7 @@ Several columns were identified as having at least some missing values. Because 
  
 As seen below, there was a clear pattern that records missing a value from at least one of these columns were also missing values in several other columns. 
 
-<img src="Figures/missingo_matrix_all.png" width = 1000 halign=center>
+<img src="Figures/missingo_matrix_all.png" width = 900 halign=center>
 
 Many of these missing values were related to an individual's opinions about the seasonal flu and vaccine, as well as their behavioral avoidance to minimize their risk of contracting the seasonal flu. Since these variables are likely related and were often all missing together, dropping these 1,768 observations out of the original 26,707 records (6.6%) seemed acceptable. Since most of the variables are categorical, other columns had their null values filled with a 'missing' category to indicate that these individuals declined to answer the question. The columns filled with a 'missing' category included the following:
 - `health_insurance` 
@@ -174,7 +174,7 @@ Performance metrics such as precision, recall, accuracy, f1 score, and ROC AUC d
 ```
 
 <img src="Figures/Best_LogReg_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_LogReg_coeffs.png" width = 900 halign=center>
+<img src="Figures/Best_LogReg_coeffs.png" width = 800 halign=center>
 
 
 ### Decision Tree
@@ -192,7 +192,7 @@ Both the GridSearch tuned decision trees performed better than the default and w
 ```
 
 <img src="Figures/Best_DT_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_DT_feat_imp.png" width = 900 halign=center>
+<img src="Figures/Best_DT_feat_imp.png" width = 800 halign=center>
 
 
 ### Random Forest
@@ -209,7 +209,7 @@ Model performance improved very slightly with hyperparameter tuning, but all per
  'rf__min_samples_split': 100}
 ```
 <img src="Figures/Best_RF_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_RF_feat_imp.png" width = 900 halign=center>
+<img src="Figures/Best_RF_feat_imp.png" width = 800 halign=center>
 
 
 ### XGradient Boosted
@@ -227,7 +227,7 @@ Model performance improved very slightly with tuning. The best estimator tuned f
 ```
 
 <img src="Figures/Best_XGB_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_XGB_feat_imp.png" width = 900 halign=center>
+<img src="Figures/Best_XGB_feat_imp.png" width = 800 halign=center>
 
 
 ### Stacking Classifier
@@ -239,7 +239,7 @@ The predictions of the stacked classifier were most influenced by the XGB estima
 ### Interpretation of Best XGradientBoost Classifier
 Overall, the models performed very similarly in terms of all metrics displayed. The stacked model performance metrics were nearly identical to those of the best XGB classifier with a recall for No Vacc = 0.81, a recall for No Vacc = 0.78 (0.77 for the best XGB), accuracy = 0.79, and ROC AUC of 0.87. Because this ensemble of all the best models relied most heavily on the best XGB classifier, I will focus on interpreting the implications regarding the most important features of that XGB classifier.
 
-<img src="Figures/Best_XGB_feat_imp.png" width = 900 halign=center>
+<img src="Figures/Best_XGB_feat_imp.png" width = 800 halign=center>
 
 As shown above, the features that were the most important for predicting vaccination status were: 
 - `doctor_rec_seasonal` - whether or not the individual's doctor recommended they get the vaccine, specifically 1: their doctor did recommend getting vaccinated was the best predictor
@@ -259,17 +259,17 @@ As shown above, the features that were the most important for predicting vaccina
 - `education` - having less than 12 years of education was also a useful category for predicting vaccination status
 
 
-<img src="Figures/Doc_Recc.png" width = 600 halign=center>
+<img src="Figures/Doc_Recc.png" width = 500 halign=center>
 
 The most important predictive feature is having a doctor recommend getting the flu vaccine. People whose physician recommended the vaccine were substantially more likely to have gotten vaccinated.
 
 
-<img src="Figures/Effect_and_Risk.png" width = 900 halign=center>
+<img src="Figures/Effect_and_Risk.png" width = 800 halign=center>
 
 The majority of people rated the effectiveness of the flu vaccine as 4 - Somewhat Effective, but those people were still more likely not to get the vaccine. Only people that rated the vaccine as 5 - Very Effective were more likely to have gotten the vaccine than not. This emphasizes how important it is to provide evidence for and actively communicate to the public about how well the vaccine can protect against the flu virus. Unsurprisingly people that are more worried about getting sick without the vaccine are more likely to get the vaccine.
 
 
-<img src="Figures/Age_and_Risk_Cat.png" width = 900 halign=center>
+<img src="Figures/Age_and_Risk_Cat.png" width = 800 halign=center>
 
 Two age groups showed up in the top 5 most important predictive features:
   - **65+ Years**: These individuals were much more likely to have gotten the flu vaccine than not. This is a great sign since individuals in this age category are at greater risk for developing flu-related complications. As such, it's likely that their doctors make sure to recommend the vaccine.
@@ -280,22 +280,22 @@ In general, it appears that the proportion of individuals electing to get vaccin
 As the risk of developing complications as a result of the flu increases, so does the proportion of individuals electing to get the vaccine. **Low risk** individuals were much less likely to choose to get the seasonal flu vaccine. **High risk** individuals with 2 or more factors that increase the risk of developing flu-related complications were much more likely to get vaccinated against the seasonal flu.
 
 
-<img src="Figures/Insur_and_Income.png" width = 900 halign=center>
+<img src="Figures/Insur_and_Income.png" width = 800 halign=center>
 
 People with health insurance are more likely to have gotten the vaccine whereas people without health insurance were very unlikely to have gotten the vaccine. This may be because individuals without health insurance are less likely to see a doctor very often, so they may not have the vaccine recommended to them (the best predictor) and they may also be less informed about the effectiveness and safety of the vaccine or their risk of falling ill and developing complications. Individuals living with a household income below the 2008 Census poverty threshold are also less likely to get the vaccine. The proportion of non-vaccinated versus vaccinated individuals is much more balanced in the other income categories.
 
 
-<img src="Figures/H1N1_Knowledge.png" width = 600 halign=center>
+<img src="Figures/H1N1_Knowledge.png" width = 500 halign=center>
 
 A very small proportion of the total sample population (< 10%) acknowledged having no knowledge of H1N1. Of those that had at least some knowledge of H1N1, the proportion of individuals that chose to get vaccinated against the seasonal flu was greater for those more informed about the H1N1 flu.
 
 
-<img src="Figures/Race.png" width = 600 halign=center>
+<img src="Figures/Race.png" width = 500 halign=center>
 
 White respondents were about as likely to get the vaccine as not, but POC were much less likely to get the vaccine.
 
 
-<img src="Figures/Educ.png" width = 600 halign=center>
+<img src="Figures/Educ.png" width = 500 halign=center>
 
 The proportion of people vaccinated within each education category increases with increasing level of education. This difference is most notable for those who did not complete high school.
 
@@ -316,7 +316,7 @@ As such, in the interest of encouraging more people to get vaccinated against th
 - Individuals between the ages of 18 and 34 were the least likely to get vaccinated against the seasonal flu in 2009 amidst the H1N1 pandemic. This is an interesting parallel with the current COVID-19 pandemic in that individuals in this age range have been identified as the most prominent spreaders of the virus in many states. This younger segment of the population is often less likely to quarantine as strictly as older age groups. Thus, we need to find a way to more effectively communicate the importance of herd immunity and taking action in the interest of the health of others to this subset of the population which is generally better able to recover if they do fall ill.
 - The fact that **people without health insurance** and those **living below the poverty line** were **much less likely to get vaccinated lends support to the growing push for universal health care**. The population as a whole won't benefit as much from herd immunity if a large portion of people do not have access to basic health care needs.
 
-- **Overall, efforts to increase the total percentage of the population that is vaccinated against the seasonal flu should focus on encouraging, informing, and providing health care accessibility to the following groups:
+- **Overall, efforts to increase the total percentage of the population that is vaccinated against the seasonal flu should focus on encouraging, informing, and providing health care accessibility to the following groups:**
      - **people between 18 to 34 years old**
      - **people without health insurance**
      - **people who rent their living space**
