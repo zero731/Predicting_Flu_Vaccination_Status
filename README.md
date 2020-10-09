@@ -174,7 +174,6 @@ Performance metrics such as precision, recall, accuracy, f1 score, and ROC AUC d
 ```
 
 <img src="Figures/Best_LogReg_eval.png" width = 1000 halign=center>
-<img src="Figures/Best_LogReg_coeffs.png" width = 800 halign=center>
 
 
 ### Decision Tree
