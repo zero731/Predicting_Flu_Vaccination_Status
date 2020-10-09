@@ -33,11 +33,8 @@ def check_unique(df, col, dropna=False):
     """
     
     import pandas as pd
-    
-    if dropna:
-        unique_vals = pd.DataFrame(df[col].value_counts())
-    else:
-        unique_vals = pd.DataFrame(df[col].value_counts(dropna=False))
+        
+    unique_vals = pd.DataFrame(df[col].value_counts(dropna=dropna))
     
     return unique_vals
 
@@ -313,8 +310,8 @@ def plot_logreg_coeffs(model, feature_names, model_step='logreg',
     from sklearn.model_selection import GridSearchCV
     import matplotlib.pyplot as plt
     
-    folder = '/Users/maxsteele/FlatIron-DS-CourseMaterials/Mod3/Mod3_Project/recloned/dsc-mod-3-project-v2-1-onl01-dtsc-ft-070620'
-    fig_filepath = folder+'/Figures/'
+#     folder = '/Users/maxsteele/FlatIron-DS-CourseMaterials/Mod3/Mod3_Project/recloned/dsc-mod-3-project-v2-1-onl01-dtsc-ft-070620'
+    fig_filepath = 'Figures/'
     
     logreg_coeffs = model.named_steps[model_step].coef_
     sorted_idx = logreg_coeffs.argsort()
