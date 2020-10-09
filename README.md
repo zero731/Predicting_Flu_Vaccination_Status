@@ -301,13 +301,13 @@ The proportion of people vaccinated within each education category increases wit
 
 ## Conclusions and Recommendations
 Overall, the best non-stacking classifier (the accuracy optimized XGB classifier) indicates that the 3 most influential factors in determining whether someone got vaccinated against the seasonal flu in 2009 were:
-- Whether a doctor recommended they get the vaccine.
 - How effective they believed the vaccine to be at protecting against the flu.
+- Whether a doctor recommended they get the vaccine.
 - Their perceived level of risk of getting sick with the flu without the vaccine.
 
 As such, in the interest of encouraging more people to get vaccinated against the seasonal flu, the following actions should be considered:
-- To maximize herd immunity, **doctors should regularly recommend that their patients get vaccinated** against the seasonal flu each year. This more personal appeal may be more effective than widespread promotion of the vaccine through other means. However, such widespread campaigns are likely essential for targeting those who do not see a doctor on a regular basis.
 - **Increase public awareness of the effectiveness of the vaccine** at protecting against the flu. This could be done through various means within communities or on a more national level. Providing sound evidence in an easily accessible manner, perhaps through TV or online ads, may help spread informed awareness. This could also be used as an opportunity to **emphasize the safety of the vaccine** (another important factor in predicting vaccination status), especially compared to the risks associated with contracting the seasonal flu.
+- To maximize herd immunity, **doctors should regularly recommend that their patients get vaccinated** against the seasonal flu each year. This more personal appeal may be more effective than widespread promotion of the vaccine through other means. However, such widespread campaigns are likely essential for targeting those who do not see a doctor on a regular basis.
 
 **Demographic information that was relevant to predicting vaccination status also has key implications:**
 - Individuals with heightened risk of developing complications after contracting the flu (either due to age group [65+], chronic medical conditions, or potentially endangering a child 6 months or younger) are much more likely to get vaccinated compared to the general population. This is a positive sign in that these individuals are often getting the information and health care they need to best protect their health. 
